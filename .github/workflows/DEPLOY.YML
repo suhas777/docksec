@@ -3,16 +3,15 @@ name: Deploy to Azure
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:       
+  workflow_dispatch:
 
 permissions:
-  id-token: write          
+  id-token: write
   contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,5 +23,5 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Confirm login worked
+      - name: Confirm login
         run: az account show
