@@ -3,10 +3,10 @@ name: Deploy to Azure
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:       # allows manual run from GitHub UI
+  workflow_dispatch:       
 
 permissions:
-  id-token: write          # needed for OIDC (Method 2)
+  id-token: write          
   contents: read
 
 jobs:
