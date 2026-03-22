@@ -1,21 +1,28 @@
 name: Deploy to Azure
+
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:       # allows manual run from GitHub UI
+
+permissions:
+  id-token: write          # needed for OIDC (Method 2)
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Step 1: Check out your code
-    - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    # Step 2: Login to Azure
-    - name: Azure Login
-    uses: azure/login@v2
-    with:
-      client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Confirm login worked
+        run: az account show
